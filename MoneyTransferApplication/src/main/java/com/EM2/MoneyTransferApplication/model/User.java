@@ -1,5 +1,6 @@
 package com.EM2.MoneyTransferApplication.model;
 
+import java.sql.Date;
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -13,36 +14,44 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-@Entity
-@Table(name="user")
+//@Entity
+//@Table(name="user")
 public class User {
 
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="user_id")
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.AUTO)
+//	@Column(name="user_id")
 	private Long id;
-	
-	@Column(name = "username")
-	@Length(min=5)
-	@NotEmpty()
+//	
+//	@Column(name = "username")
+//	@Length(min=5)
+//	@NotEmpty()
 	private String username;
 	
-	@Column(name="password")
-	@Length(min=5)
-	@NotEmpty
+//	@Column(name="password")
+//	@Length(min=5)
+//	@NotEmpty
 	private String password;
 	
-	@Column(name="age")
+//	@Column(name="age")
 	private int age;
 	
-	@Column(name="creation_time")
-	private Instant creationTime;
+//	@Column(name="creation_time")
+	private Date creationTime;
 	
-	@Column(name="role")
-	@NotNull
-	private String role;
+//	@Column(name="role")
+//	@NotNull
+	private String role;	
+	
+	public User(Long id, String username, String password, int age, Date dateCreated, String role) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.age = age;
+		this.creationTime = dateCreated;
+		this.role = role;
+}
 
-	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", age=" + age
@@ -106,11 +115,11 @@ public class User {
 		this.age = age;
 	}
 
-	public Instant getCreationTime() {
+	public Date getCreationTime() {
 		return creationTime;
 	}
 
-	public void setCreationTime(Instant creationTime) {
+	public void setCreationTime(Date creationTime) {
 		this.creationTime = creationTime;
 	}
 
