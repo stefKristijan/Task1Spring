@@ -1,6 +1,7 @@
 package com.EM2.MoneyTransferApplication.model;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Instant;
 
 import javax.persistence.Column;
@@ -21,7 +22,7 @@ public class User {
 //	@Id
 //	@GeneratedValue(strategy=GenerationType.AUTO)
 //	@Column(name="user_id")
-	private Long id;
+	private int id;
 //	
 //	@Column(name = "username")
 //	@Length(min=5)
@@ -37,13 +38,13 @@ public class User {
 	private int age;
 	
 //	@Column(name="creation_time")
-	private Date creationTime;
+	private Timestamp creationTime;
 	
 //	@Column(name="role")
 //	@NotNull
 	private String role;	
 	
-	public User(Long id, String username, String password, int age, Date dateCreated, String role) {
+	public User(int id, String username, String password, int age, Timestamp dateCreated, String role) {
 		this.id = id;
 		this.username = username;
 		this.password = password;
@@ -58,11 +59,12 @@ public class User {
 				+ ", creationTime=" + creationTime + ", role=" + role + "]";
 	}
 
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -75,19 +77,16 @@ public class User {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -115,11 +114,11 @@ public class User {
 		this.age = age;
 	}
 
-	public Date getCreationTime() {
+	public Timestamp getCreationTime() {
 		return creationTime;
 	}
 
-	public void setCreationTime(Date creationTime) {
+	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
 	}
 

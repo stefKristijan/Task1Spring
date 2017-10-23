@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>Users</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+	<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">SpringApp</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+				<li><a th:href="@{/}">Back</a></li>
+		    </ul>
+		  </div>
+	</nav>
+</div>
+<div class="container">
+	<span th:text="${successMessage}"></span>
+	<form autocomplete="off" action="#" th:action="@{/customer-accounts}"
+			th:method="post" class="form-horizontal" role="form">
+		<div class="form-group">
+			<div class="col-sm-1">
+				<button type="submit" class="btn btn-primary">Create new account</button>
+			</div>
+		</div>
+	</form>
+					
+	<div th:if="${not #lists.isEmpty(accounts)}">
+		<h2>Users</h2>
+		<table class="table table-stripped">
+			<tr>
+				<th>Account id</th>
+				<th>Balance</th>
+				<th>User id</th>
+				<th>Deposit money</th>
+				<th>Transfer money</th>
+				<th>Delete account</th>
+			</tr>
+			<tr th:each="account : ${accounts}">
+				<td th:text="${account.accId}"></td>
+				<td th:text="${account.balance}"></td>
+				<td th:text="${account.userId}"></td>
+				<td>
+					<form th:action="@{/customer-accounts(id=${account.accId})}" th:method="put" class="form-inline">
+					<input type="number" step="0.01" min="0" class="form-control" name="amount" placeholder="Amount"/>
+					<button type="submit" class="btn btn-success btn-xs">Deposit</button>
+					</form>
+				</td>
+				<td>
+					<a class="btn btn-primary btn-xs" th:href="@{/transfer(id=${account.accId})}">Transfer</a>			
+				</td>
+				<td>
+					<form th:action="@{/customer-accounts(id=${account.accId})}" th:method="delete">
+					<button type="submit" class="btn btn-danger btn-xs">Delete</button>
+					</form>
+				</td>
+				
+			</tr>
+		</table>
+	
+	</div>
+</div>
+    
+</body>
+</html>

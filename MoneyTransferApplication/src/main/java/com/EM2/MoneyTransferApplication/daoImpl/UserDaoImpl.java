@@ -3,6 +3,7 @@ package com.EM2.MoneyTransferApplication.daoImpl;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -50,25 +50,29 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 	}
 
 	@Override
-	public void deleteCustomer(int customerId) {
-		logger.info("Deleting user: "+customerId+ "from database");
-		String deleteQuery = "DELETE FROM user WHERE id=?";
-		getJdbcTemplate().update(deleteQuery,customerId);
+	public void deleteUser(int userId) {
+		logger.info("Deleting user: "+userId+ "from database");
+		if(userId!=1) {
+			String deleteAccountsQuery="DELETE FROM account WHERE user_id=?";
+			getJdbcTemplate().update(deleteAccountsQuery,userId);
+			String deleteQuery = "DELETE FROM user WHERE user_id=?";
+			getJdbcTemplate().update(deleteQuery,userId);
+		}
 	}
 
 	@Override
-	public List<User> getAllCustomers() {
+	public List<User> getAllUsers() {
 		logger.info("Getting all customers from database");
-		String allCustomersQuery="SELECT * FROM user WHERE role='customer'";
+		String allCustomersQuery="SELECT * FROM user";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(allCustomersQuery);
 		
 		List<User> users = new ArrayList<User>();
 		for(Map<String, Object> row: rows) {
-			long id = (long) row.get("user_id");
+			int id =  (int) row.get("user_id");
 			String username = (String) row.get("username");
 			String password = (String)row.get("password");
 			int age = (int) row.get("age");
-			Date dateCreated = (Date) row.get("creation_time");
+			Timestamp dateCreated = (Timestamp) row.get("creation_time");
 			String role = (String) row.get("role");
 			User user = new User(id, username, password, age, dateCreated, role);
 			users.add(user);
@@ -78,17 +82,16 @@ public class UserDaoImpl extends JdbcDaoSupport implements UserDao{
 
 	@Override
 	public User getUserByUsername(String username) {
-		logger.info("Getting user with username: "+username);
 		String getUserQuery = "SELECT * FROM user WHERE username=?";
 		return getJdbcTemplate().queryForObject(getUserQuery, new Object[] {username}, new RowMapper<User>() {
 
 			@Override
 			public User mapRow(ResultSet row, int rowNumber) throws SQLException {
-				long id = (long) row.getInt("user_id");
+				int id = (int) row.getInt("user_id");
 				String username = (String) row.getString("username");
 				String password = (String)row.getString("password");
 				int age = (int) row.getInt("age");
-				Date dateCreated = (Date) row.getDate("creation_time");
+				Timestamp dateCreated = (Timestamp) row.getTimestamp("creation_time");
 				String role = (String) row.getString("role");
 				User user = new User(id, username, password, age, dateCreated, role);
 				logger.info("Got user : "+user);

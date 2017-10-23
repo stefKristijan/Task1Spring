@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>Users</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+	<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+	<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="#">SpringApp</a>
+		    </div>
+		    <ul class="nav navbar-nav">
+				<li><a th:href="@{/}">Back</a></li>
+		    </ul>
+		  </div>
+	</nav>
+</div>
+<div class="container">
+	<p th:text="${transferMessage}"></p>
+	<form autocomplete="off" action="#" th:action="@{/transfer(id=${sourceAccId})}"
+			th:method="put" class="form-horizontal" role="form">
+			<h2 th:text="'From account id: '+${sourceAccId}+ ' '"></h2>
+			<input type="number" step="0.01" min="0" class="form-control" name="amount" placeholder="Amount"/>
+		<h2>To account:</h2>
+		<select class="form-control" name="destAccId"> 
+				<option th:each="destinationAccount : ${allAccounts}" th:value="${destinationAccount.accId}" th:text="${destinationAccount.accId}"></option>
+		</select> 
+		<div class="col-sm-9 form-group">
+			<button type="submit" class="btn btn-primary btn-lg ">Transfer money</button>
+		</div>
+	</form>			
+</div>
+    
+</body>
+</html>

@@ -51,19 +51,21 @@ public class AccountDaoImpl extends JdbcDaoSupport implements AccountDao{
 	}
 
 	@Override
-	public void transferMoney(int destinationAccId, double moneyAmount, Account sourceAccount) {
-		logger.info("Transfering money from account:"+sourceAccount+" to account:"+destinationAccId);
+	public void transferMoney(int destinationAccId, double moneyAmount, Account sourceAccount)  {
 		if(moneyAmount<=sourceAccount.getBalance()) {
+			logger.info("Transfering money from account:"+sourceAccount+" to account:"+destinationAccId);
 			String reduceBalanceQuery="UPDATE account SET balance=balance-? WHERE user_id=? AND account_id=?";
 			getJdbcTemplate().update(reduceBalanceQuery,new Object[] {
 				moneyAmount,sourceAccount.getUserId(),sourceAccount.getAccId()	
 			});
 			depositMoney(destinationAccId, moneyAmount);
+		}else {
+			throw new RuntimeException("You can't transfer more money than you have");
 		}
 	}
 
 	@Override
-	public List<Account> getAllAccounts(int adminId) {
+	public List<Account> getAllAccounts() {
 		logger.info("Getting all accounts from database");
 		String allAccountsQuery="SELECT * FROM account";
 		List<Map<String, Object>> rows = getJdbcTemplate().queryForList(allAccountsQuery);
@@ -81,8 +83,8 @@ public class AccountDaoImpl extends JdbcDaoSupport implements AccountDao{
 	private List<Account> createAccountList(List<Map<String, Object>> rows) {
 		List<Account> accounts = new ArrayList<Account>();
 		for(Map<String, Object> row: rows) {
-			long userId = (long) row.get("user_id");
-			long accId = (long) row.get("account_id");
+			int userId = (int) row.get("user_id");
+			int accId = (int) row.get("account_id");
 			double balance = (double) row.get("balance");
 			
 			Account account = new Account(accId, balance, userId);
@@ -94,19 +96,26 @@ public class AccountDaoImpl extends JdbcDaoSupport implements AccountDao{
 	@Override
 	public Account getAccountById(int accountId) {
 		logger.info("Getting account from account id:"+accountId);
-		String getAccountQuery = "SELECT * FROM user WHERE account_id=?;";
+		String getAccountQuery = "SELECT * FROM account WHERE account_id=?;";
 		return getJdbcTemplate().queryForObject(getAccountQuery, new Object[] {accountId}, new RowMapper<Account>() {
 
 			@Override
 			public Account mapRow(ResultSet row, int rowNumber) throws SQLException {
-				long userId = (long) row.getInt("user_id");
-				long accId = (long) row.getInt("account_id");
+				int userId = (int) row.getInt("user_id");
+				int accId = (int) row.getInt("account_id");
 				double balance = (double) row.getDouble("balance");
 				
 				Account account = new Account(accId, balance, userId);
 				return account;
 			}
 		});
+	}
+
+	@Override
+	public void deleteAccount(int accId) {
+		logger.info("Deleting account: "+accId+ "from database");
+		String deleteQuery = "DELETE FROM account WHERE account_id=?";
+		getJdbcTemplate().update(deleteQuery,accId);
 	}
 
 }

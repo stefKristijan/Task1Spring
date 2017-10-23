@@ -8,7 +8,8 @@ public interface AccountDao {
 	void createAccount(int customerId);
 	void depositMoney(int accountId, double moneyAmount);
 	void transferMoney(int destinationAccId, double moneyAmount, Account sourceAccount);
-	List<Account> getAllAccounts(int adminId);
+	List<Account> getAllAccounts();
 	List<Account> getAccountsByCustomerId(int customerId);
 	Account getAccountById(int accountId);
+	void deleteAccount(int accId);
 }

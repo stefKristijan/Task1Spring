@@ -26,15 +26,15 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void deleteCustomer(int customerId) {
-		logger.info("Admin is deleting customer: "+customerId);
-		this.userDao.deleteCustomer(customerId);
+	public void deleteUser(int userId) {
+		logger.info("Admin is deleting customer: "+userId);
+		this.userDao.deleteUser(userId);
 	}
 
 	@Override
-	public List<User> getAllCustomers() {
+	public List<User> getAllUsers() {
 		logger.info("Admin is getting all the customers");
-		return this.userDao.getAllCustomers();
+		return this.userDao.getAllUsers();
 	}
 
 	@Override

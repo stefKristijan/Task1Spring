@@ -38,9 +38,9 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public List<Account> getAllAccounts(int adminId) {
-		logger.info("Admin: "+adminId +" is getting data about all accounts");
-		return this.accountDao.getAllAccounts(adminId);
+	public List<Account> getAllAccounts() {
+		logger.info("Admin is getting data about all accounts");
+		return this.accountDao.getAllAccounts();
 	}
 
 	@Override
@@ -53,6 +53,13 @@ public class AccountServiceImpl implements AccountService{
 	public Account getAccountById(int accountId) {
 		logger.info("getting data about account: "+accountId);
 		return this.accountDao.getAccountById(accountId);
+	}
+
+	@Override
+	public void deleteAccount(int accId) {
+		logger.info("deleting account with id:"+accId);
+		this.accountDao.deleteAccount(accId);
+		
 	}
 
 }

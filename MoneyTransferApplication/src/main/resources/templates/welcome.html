@@ -19,18 +19,11 @@
 	      <a class="navbar-brand" href="#">SpringApp</a>
 	    </div>
 	    <ul class="nav navbar-nav">
-			<li th:if="${isAdmin}"><a th:href="@{/register}">Create new user</a></li>
-			<li th:if="${isAdmin}"><a th:href="@{/admin/accounts}">All accounts</a></li>
-			<li th:if="${isAdmin}"><a th:href="@{/admin/users}">Manage users</a></li>
-			<li th:if="${isAdmin==false}"><a th:href="@{/customer-accounts}">Manage accounts</a></li>
-	    </ul>
-	    <ul class="nav navbar-nav navbar-right">
-	      <li><a th:text="'Logged in as: '+ ${username}"></a></li>
-	       <li><a th:href="@{/logout}">Log out</a></li>
+	      <li><a th:href="@{/login}">Login</a></li>
 	    </ul>
 	  </div>
 	</nav>
-	<h1>You were successfully logged in!</h1>
+	<h1>Welcome!</h1>
     </div>
 </body>
 </html>

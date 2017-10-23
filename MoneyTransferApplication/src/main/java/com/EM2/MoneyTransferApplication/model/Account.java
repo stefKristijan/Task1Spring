@@ -2,24 +2,37 @@ package com.EM2.MoneyTransferApplication.model;
 
 public class Account {
 
-	private Long accId;
+	private int accId;
 	private double balance;
-	private Long userId;
+	private int userId;
 	
-	public Account(Long accId, double balance, Long userId) {
+	public Account() {}
+	
+	public int getAccId() {
+		return accId;
+	}
+	public void setAccId(int accId) {
 		this.accId = accId;
+	}
+	public double getBalance() {
+		return balance;
+	}
+	public void setBalance(double balance) {
 		this.balance = balance;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((accId == null) ? 0 : accId.hashCode());
+		result = prime * result + accId;
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -29,43 +42,22 @@ public class Account {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
-		if (accId == null) {
-			if (other.accId != null)
-				return false;
-		} else if (!accId.equals(other.accId))
+		if (accId != other.accId)
 			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
 		return "Account [accId=" + accId + ", balance=" + balance + ", userId=" + userId + "]";
 	}
-	
-	
-	
-	public Long getAccId() {
-		return accId;
-	}
-
-	public void setAccId(Long accId) {
+	public Account(int accId, double balance, int userId) {
+		super();
 		this.accId = accId;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
+		this.balance = balance;
 		this.userId = userId;
 	}
-
-	public double getBalance() {
-		return balance;
-	}
-	public void setBalance(double balance) {
-		this.balance = balance;
-	}
+	
+	
 	
 	
 	

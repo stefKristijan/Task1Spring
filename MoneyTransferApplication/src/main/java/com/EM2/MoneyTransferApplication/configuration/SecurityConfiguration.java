@@ -1,8 +1,6 @@
 package com.EM2.MoneyTransferApplication.configuration;
 
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -40,9 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.antMatchers("/").permitAll()
-			.antMatchers("/login").permitAll()
-			.antMatchers("/register").permitAll()
-			.antMatchers("/admin/**").hasAuthority("admin").anyRequest()
+			.antMatchers("/login").anonymous()
+			.antMatchers("/register").hasAuthority("admin")
+			.antMatchers("/customer-accounts").hasAuthority("customer")
+			.antMatchers("/transfer").hasAuthority("customer")
+			.antMatchers("/admin/*").hasAuthority("admin").anyRequest()
 			.authenticated().and().csrf().disable()
 			.formLogin()
 			.loginPage("/login").failureUrl("/login?error=true")
@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 			.and().logout()
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 			.logoutSuccessUrl("/").and().exceptionHandling()
-			.accessDeniedPage("/access-denied");
+			.accessDeniedPage("/403");
 	}
 
 	@Override
