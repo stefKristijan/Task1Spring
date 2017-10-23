@@ -2,6 +2,10 @@ package com.EM2.MoneyTransferApplication.controller;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 
+import java.util.Objects;
+
+import javax.validation.Valid;
+
 import org.hibernate.JDBCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,15 +56,20 @@ public class CustomerController {
 	@RequestMapping(value="/customer-accounts", method=RequestMethod.DELETE)
 	public ModelAndView deleteAccount(ModelMap model, @RequestParam(value="id") int accId) {
 		User customer = getUserFromDB();
-		this.accountService.deleteAccount(accId);
+		this.accountService.deleteAccount(accId,customer.getId());
 		return setCustomerModelAndView(model,customer);
 	}
 	
 	@RequestMapping(value="/customer-accounts", method=RequestMethod.PUT)
 	public ModelAndView depositMoney(ModelMap model, @RequestParam("amount") double moneyAmount, 
 													@RequestParam(value="id") int accId) {
+		if(Objects.isNull(moneyAmount)) {
+			throw new NullPointerException("Amount can't be null");
+		}
 		User customer = getUserFromDB();
-		this.accountService.depositMoney(accId, moneyAmount);
+		if(moneyAmount!=0) {
+			this.accountService.depositMoney(accId, moneyAmount);
+		}
 		return setCustomerModelAndView(model,customer);
 	}
 	
@@ -75,8 +84,11 @@ public class CustomerController {
 	
 	@RequestMapping(value="/transfer", method=RequestMethod.PUT)
 	public ModelAndView transferMoney(Model model, @RequestParam(value="id", required=true) int sourceAccId,
-										@RequestParam(value="amount", required=true) double amount,
+										@RequestParam(value="amount") double amount,
 										@RequestParam(value="destAccId", required=true) int destinationAccId) {
+		if(Objects.isNull(amount)) {
+			throw new NullPointerException("Amount can't be null");
+		}
 		ModelAndView modelAndView = new ModelAndView("transfer");
 		if(sourceAccId!=destinationAccId) {
 			try {

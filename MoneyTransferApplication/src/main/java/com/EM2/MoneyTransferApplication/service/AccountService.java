@@ -11,5 +11,5 @@ public interface AccountService {
 	List<Account> getAllAccounts();
 	List<Account> getAccountsByCustomerId(int customerId);
 	Account getAccountById(int accountId);
-	void deleteAccount(int accId);
+	void deleteAccount(int accId, int customerId);
 }

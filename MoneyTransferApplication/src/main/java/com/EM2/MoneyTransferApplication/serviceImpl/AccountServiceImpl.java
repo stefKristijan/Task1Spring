@@ -56,9 +56,9 @@ public class AccountServiceImpl implements AccountService{
 	}
 
 	@Override
-	public void deleteAccount(int accId) {
+	public void deleteAccount(int accId, int customerId) {
 		logger.info("deleting account with id:"+accId);
-		this.accountDao.deleteAccount(accId);
+		this.accountDao.deleteAccount(accId,customerId);
 		
 	}
 
